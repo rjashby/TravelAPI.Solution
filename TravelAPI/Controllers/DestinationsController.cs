@@ -36,10 +36,10 @@ namespace TravelAPI.Controllers
         query = query.Where(entry => entry.City == city);
       }    
 
-      if (review > 0)
-      {
-        query = query.Where(entry => entry.Review.Count() >= review);
-      }      
+      // if (review > 0)
+      // {
+      //   query = query.Where(entry => entry.Review.Count() >= review);
+      // }      
 
       if (rating > 0)
       {

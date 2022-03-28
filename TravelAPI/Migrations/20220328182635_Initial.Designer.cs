@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TravelAPI.Models;
 
-namespace TravelAPI.Solution.Migrations
+namespace TravelAPI.Migrations
 {
     [DbContext(typeof(TravelAPIContext))]
-    [Migration("20220328165204_Initial")]
+    [Migration("20220328182635_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,9 +33,6 @@ namespace TravelAPI.Solution.Migrations
                     b.Property<double>("Rating")
                         .HasColumnType("double");
 
-                    b.Property<string>("Review")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
                     b.HasKey("DestinationId");
 
                     b.ToTable("Destinations");
@@ -46,41 +43,69 @@ namespace TravelAPI.Solution.Migrations
                             DestinationId = 1,
                             City = "Portland",
                             Country = "USA",
-                            Rating = 0.0,
-                            Review = "its portland its got the ports"
+                            Rating = 0.0
                         },
                         new
                         {
                             DestinationId = 2,
                             City = "Toronot",
                             Country = "Canada",
-                            Rating = 10.0,
-                            Review = "maple syrup eh?"
+                            Rating = 10.0
                         },
                         new
                         {
                             DestinationId = 3,
                             City = "Paris",
                             Country = "France",
-                            Rating = 2.0,
-                            Review = "baguette "
+                            Rating = 2.0
                         },
                         new
                         {
                             DestinationId = 4,
                             City = "Amsterdam",
                             Country = "Netherlands",
-                            Rating = 4.7000000000000002,
-                            Review = "The original Las Vegas"
+                            Rating = 4.7000000000000002
                         },
                         new
                         {
                             DestinationId = 5,
                             City = "London",
                             Country = "United Kingdom",
-                            Rating = 4.5,
-                            Review = "This place is a total place to see."
+                            Rating = 4.5
                         });
+                });
+
+            modelBuilder.Entity("TravelAPI.Models.Review", b =>
+                {
+                    b.Property<int>("ReviewId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("DestinationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.HasKey("ReviewId");
+
+                    b.HasIndex("DestinationId");
+
+                    b.ToTable("Reviews");
+                });
+
+            modelBuilder.Entity("TravelAPI.Models.Review", b =>
+                {
+                    b.HasOne("TravelAPI.Models.Destination", "Destination")
+                        .WithMany()
+                        .HasForeignKey("DestinationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Destination");
                 });
 #pragma warning restore 612, 618
         }

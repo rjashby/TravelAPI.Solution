@@ -22,5 +22,14 @@ namespace TravelAPI.Models
     }
 
     public DbSet<Destination> Destinations { get; set; }
+    
+    public DbSet<Review> Reviews { get; set; }
+
+    public TravelAPIContext(DbContextOptions options) : base(options) { }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+      optionsBuilder.UseLazyLoadingProxies();
+    }
   }
 }

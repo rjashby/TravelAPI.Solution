@@ -9,5 +9,6 @@ namespace TravelAPI.Models
     public int DestinationId { get; set; }
     public string Title { get; set; }
     public string Content { get; set; }
+    public virtual Destination Destination { get; set; }
   }
 }
