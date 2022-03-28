@@ -5,24 +5,24 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TravelAPI.Models;
+using Travel.Models;
 
-namespace TravelAPI.Controllers
+namespace Travel.Controllers
 {
   [Route("api/[controller]")]
   [ApiController]
   public class DestinationsController : ControllerBase
   {
-    private readonly TravelAPIContext _db;
+    private readonly TravelContext _db;
 
-    public DestinationsController(TravelAPIContext db)
+    public DestinationsController(TravelContext db)
     {
       _db = db;
     }
 
     // GET: api/Destinations
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Destination>>> Get(string country, string city, int review, double rating)
+    public async Task<ActionResult<IEnumerable<Destination>>> Get(string country, string city, int review)
     {
       var query = _db.Destinations.AsQueryable();
 
@@ -40,11 +40,6 @@ namespace TravelAPI.Controllers
       // {
       //   query = query.Where(entry => entry.Review.Count() >= review);
       // }      
-
-      if (rating > 0)
-      {
-        query = query.Where(entry => entry.Rating >= rating);
-      }
 
       return await query.ToListAsync();
     }

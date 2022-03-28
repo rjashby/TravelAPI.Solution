@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace TravelAPI.Models
+namespace Travel.Models
 {
   public class Review
   {
@@ -9,6 +9,7 @@ namespace TravelAPI.Models
     public int DestinationId { get; set; }
     public string Title { get; set; }
     public string Content { get; set; }
+    public double Rating { get; set; }
     public virtual Destination Destination { get; set; }
   }
 }

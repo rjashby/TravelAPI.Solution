@@ -12,9 +12,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
-using TravelAPI.Models;
+using Travel.Models;
 
-// namespace TravelAPI.Solution
+// namespace Travel.Solution
 // {
 //     public class Startup
 //     {
@@ -32,7 +32,7 @@ using TravelAPI.Models;
 //             services.AddControllers();
 //             services.AddSwaggerGen(c =>
 //             {
-//                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TravelAPI.Solution", Version = "v1" });
+//                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Travel.Solution", Version = "v1" });
 //             });
 //         }
 
@@ -43,7 +43,7 @@ using TravelAPI.Models;
 //             {
 //                 app.UseDeveloperExceptionPage();
 //                 app.UseSwagger();
-//                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TravelAPI.Solution v1"));
+//                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Travel.Solution v1"));
 //             }
 
 //             //app.UseHttpsRedirection();
@@ -63,7 +63,7 @@ using TravelAPI.Models;
 
 
 
-namespace TravelAPI
+namespace Travel
 {
     public class Startup
     {
@@ -78,7 +78,7 @@ namespace TravelAPI
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddDbContext<TravelAPIContext>(opt =>
+            services.AddDbContext<TravelContext>(opt =>
                 opt.UseMySql(Configuration["ConnectionStrings:DefaultConnection"], ServerVersion.AutoDetect(Configuration["ConnectionStrings:DefaultConnection"])));
             services.AddControllers();
         }

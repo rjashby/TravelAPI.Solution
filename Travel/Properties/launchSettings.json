@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "TravelAPI.Solution": {
+    "Travel.Solution": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,
