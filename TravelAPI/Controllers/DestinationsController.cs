@@ -22,7 +22,7 @@ namespace TravelAPI.Controllers
 
     // GET: api/Destinations
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Destination>>> Get(string country, string city, string review, double rating)
+    public async Task<ActionResult<IEnumerable<Destination>>> Get(string country, string city, int review, double rating)
     {
       var query = _db.Destinations.AsQueryable();
 
@@ -36,9 +36,9 @@ namespace TravelAPI.Controllers
         query = query.Where(entry => entry.City == city);
       }    
 
-      if (review != null)
+      if (review > 0)
       {
-        query = query.Where(entry => entry.Review == review);
+        query = query.Where(entry => entry.Review.Count() >= review);
       }      
 
       if (rating > 0)
