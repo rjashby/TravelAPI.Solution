@@ -36,29 +36,19 @@ namespace Travel.Controllers
     
     [HttpGet]
     [Route("Popular")]
-    public async Task<ActionResult<IEnumerable<Destination>>> Popular(int destinationId, double rating)
+    public async Task<ActionResult<IEnumerable<Destination>>> Popular()
     {
       var query = _db.Destinations.AsQueryable();
 
-      
-      if (destinationId > 0) 
-      {
+      var all = _db.Reviews.GroupBy(x => x.DestinationId)
+        .Select(group => new {DestinationId = group.Key, Count = group.Count()})
+        .OrderByDescending(x => x.Count);
 
-        var all = _db.Reviews.GroupBy(x => x.DestinationId)
-          .Select(group => new {DestinationId = group.Key, Count = group.Count()})
-          .OrderByDescending(x => x.Count);
+      var item = all.First();
+      int mostfrequent = item.DestinationId;
+      var mostfrequentcount = item.Count;
 
-        // var maxRepeatedItem = _db.Reviews.GroupBy(x => x.DestinationId)
-        //                   .OrderByDescending(x => x.Count())
-        //                   .First().Key;
-
-        var item = all.First();
-        int mostfrequent = item.DestinationId;
-        var mostfrequentcount = item.Count;
-
-        query = query.Where(entry => entry.DestinationId == mostfrequent);
-        
-      }
+      query = query.Where(entry => entry.DestinationId == mostfrequent);
       return await query.ToListAsync();
     }
 
