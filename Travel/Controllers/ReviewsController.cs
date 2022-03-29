@@ -34,6 +34,8 @@ namespace Travel.Controllers
       return await query.ToListAsync();
     }
     
+
+     //GET: api/Reviews/Popular
     [HttpGet]
     [Route("Popular")]
     public async Task<ActionResult<IEnumerable<Destination>>> Popular()

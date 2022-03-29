@@ -14,7 +14,7 @@ namespace Travel.Models
       builder.Entity<Destination>()
       .HasData(
         new Destination { DestinationId = 1, Country = "USA", City = "Portland"},
-        new Destination { DestinationId = 2, Country = "Canada", City = "Toronot"},
+        new Destination { DestinationId = 2, Country = "Canada", City = "Toronto"},
         new Destination { DestinationId = 3, Country = "France", City = "Paris"},
         new Destination { DestinationId = 4, Country = "Netherlands", City = "Amsterdam"},
         new Destination { DestinationId = 5, Country = "United Kingdom", City = "London"}

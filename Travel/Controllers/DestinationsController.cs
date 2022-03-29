@@ -44,6 +44,46 @@ namespace Travel.Controllers
       return await query.ToListAsync();
     }
 
+     //GET: api/Destinations/Country?country=
+    [HttpGet]
+    [Route("Country")]
+    public async Task<ActionResult<IEnumerable<Review>>> Country(string country)
+    {
+      var query = _db.Reviews.AsQueryable();
+
+      if (country != null)
+      {
+        var id = _db.Destinations.Where(x => x.Country == country).ToList();
+        List<int> www = new List<int> {};
+        foreach (var thing in id) 
+        {
+          www.Add(thing.DestinationId);
+        }
+        query = query.Where(r => www.Contains(r.DestinationId));
+      }
+      return await query.ToListAsync();
+    }
+
+     //GET: api/Destinations/City
+    [HttpGet]
+    [Route("City")]
+    public async Task<ActionResult<IEnumerable<Review>>> City(string city)
+    {
+      var query = _db.Reviews.AsQueryable();
+
+      if (city != null)
+      {
+        var id = _db.Destinations.Where(x => x.City == city).ToList();
+        List<int> www = new List<int> {};
+        foreach (var thing in id) 
+        {
+          www.Add(thing.DestinationId);
+        }
+        query = query.Where(r => www.Contains(r.DestinationId));
+      }
+      return await query.ToListAsync();
+    }
+
     // GET: api/Destinations/5
     [HttpGet("{id}")]
     public async Task<ActionResult<Destination>> GetDestination(int id)
