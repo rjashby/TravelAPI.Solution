@@ -84,6 +84,22 @@ namespace Travel.Controllers
       return await query.ToListAsync();
     }
 
+    //GET: api/Destinations/Random
+    [HttpGet]
+    [Route("Random")]
+    public async Task<ActionResult<IEnumerable<Destination>>> Random()
+    {
+      var query = _db.Destinations.AsQueryable();
+      Random random = new Random();
+      int r = 0;
+      while (!query.Any(d => d.DestinationId == r))
+      {
+        r = random.Next(1, (query.Count() + 1));
+      }
+      query = query.Where(entry => entry.DestinationId == r);
+      return await query.ToListAsync();
+    }
+
     // GET: api/Destinations/5
     [HttpGet("{id}")]
     public async Task<ActionResult<Destination>> GetDestination(int id)

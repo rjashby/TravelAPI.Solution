@@ -70,8 +70,6 @@ namespace Travel.Controllers
         {
             return NotFound();
         }
-
-       
         return review;
     }
 
