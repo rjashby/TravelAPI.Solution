@@ -6,7 +6,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Travel.Models;
-
+using Travel.Wrappers;
+// using Travel.Contexts;
+using Travel.Filter;
+// using Travel.Helpers;
+// using Travel.Services;
 
 namespace Travel.Controllers
 {
@@ -22,18 +26,29 @@ namespace Travel.Controllers
     }
 
     //GET: api/Reviews
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<Review>>> Get(int destinationId, double rating)
-    {
-      var query = _db.Reviews.AsQueryable();
+    // [HttpGet]
+    // public async Task<ActionResult<IEnumerable<Review>>> Get(int destinationId, double rating)
+    // {
+    //   var query = _db.Reviews.AsQueryable();
 
-      if (rating > 0)
-      {
-        query = query.Where(entry => entry.Rating >= rating);
-      }
-      return await query.ToListAsync();
+    //   if (rating > 0)
+    //   {
+    //     query = query.Where(entry => entry.Rating >= rating);
+    //   }
+    //   return await query.ToListAsync();
+    // }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAll([FromQuery] PaginationFilter filter)
+    {
+      var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+      var pagedData = await _db.Reviews
+        .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
+        .Take(validFilter.PageSize)
+        .ToListAsync();
+      var totalRecords = await _db.Reviews.CountAsync();
+      return Ok(new PagedResponse<List<Review>>(pagedData, validFilter.PageNumber, validFilter.PageSize));
     }
-    
 
      //GET: api/Reviews/Popular
     [HttpGet]
@@ -55,23 +70,31 @@ namespace Travel.Controllers
     }
 
     // GET: api/Reviews/5
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Review>> GetReview(int id, int destinationId, double rating)
-    {
+    // [HttpGet("{id}")]
+    // public async Task<ActionResult<Review>> GetReview(int id, int destinationId, double rating)
+    // {
         
-        var review = await _db.Reviews.FindAsync(id);
+    //     var review = await _db.Reviews.FindAsync(id);
 
-        if (destinationId == 0)
-        {
+    //     if (destinationId == 0)
+    //     {
           
-        }
+    //     }
 
-        if (review == null)
-        {
-            return NotFound();
-        }
-        return review;
+    //     if (review == null)
+    //     {
+    //         return NotFound();
+    //     }
+    //     return review;
+    // }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+      var review = await _db.Reviews.Where(a => a.ReviewId == id).FirstOrDefaultAsync();
+      return Ok(new Response<Review>(review));
     }
+
 
     // PUT: api/Reviews/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -111,7 +134,7 @@ namespace Travel.Controllers
       _db.Reviews.Add(review);
       await _db.SaveChangesAsync();
 
-      return CreatedAtAction(nameof(GetReview), new { id = review.ReviewId }, review);
+      return CreatedAtAction(nameof(GetById), new { id = review.ReviewId }, review);
     }
 
     // DELETE: api/Reviews/5
