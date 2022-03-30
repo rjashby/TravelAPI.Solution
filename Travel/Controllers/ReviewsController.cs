@@ -76,14 +76,14 @@ namespace Travel.Controllers
     // PUT: api/Reviews/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> Put(int id, Destination destination)
+    public async Task<IActionResult> Put(int id, Review review)
     {
-      if (id != destination.DestinationId)
+      if (id != review.ReviewId)
       {
         return BadRequest();
       }
 
-      _db.Entry(destination).State = EntityState.Modified;
+      _db.Entry(review).State = EntityState.Modified;
 
       try
       {

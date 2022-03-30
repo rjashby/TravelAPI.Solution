@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Travel.Models;
 
@@ -21,28 +22,34 @@ namespace Travel.Controllers
     }
 
     // GET: api/Destinations
+
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Destination>>> Get(string country, string city, int review)
+    public async Task<IActionResult> GetAll([FromQuery] UrlQuery urlQuery)
     {
-      var query = _db.Destinations.AsQueryable();
-
-      if (country != null)
-      {
-        query = query.Where(entry => entry.Country == country);
-      }
-
-      if (city != null)
-      {
-        query = query.Where(entry => entry.City == city);
-      }    
-
-      // if (review > 0)
-      // {
-      //   query = query.Where(entry => entry.Review.Count() >= review);
-      // }      
-
-      return await query.ToListAsync();
+        var validUrlQuery = new UrlQuery(urlQuery.PageNumber, urlQuery.PageSize);
+        var pagedData = _db.Destinations
+          .OrderBy(thing => thing.DestinationId)
+          .Skip((validUrlQuery.PageNumber - 1) * validUrlQuery.PageSize)
+          .Take(validUrlQuery.PageSize);
+        return Ok(pagedData);
     }
+
+    // [HttpGet]
+    // public async Task<ActionResult<IEnumerable<Destination>>> Get(string country, string city, [FromQuery] UrlQuery urlQuery)
+    // {
+    //   var query = _db.Destinations.AsQueryable();
+    //   if (country != null)
+    //   {
+    //     query = query.Where(entry => entry.Country == country);
+    //   }
+
+    //   if (city != null)
+    //   {
+    //     query = query.Where(entry => entry.City == city);
+    //   }       
+
+    //   return await query.ToListAsync();
+    // }
 
      //GET: api/Destinations/Country?country=
     [HttpGet]
