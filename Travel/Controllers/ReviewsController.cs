@@ -9,8 +9,8 @@ using Travel.Models;
 using Travel.Wrappers;
 // using Travel.Contexts;
 using Travel.Filter;
-// using Travel.Helpers;
-// using Travel.Services;
+using Travel.Helpers;
+using Travel.Services;
 
 namespace Travel.Controllers
 {
@@ -19,9 +19,11 @@ namespace Travel.Controllers
   public class ReviewsController : ControllerBase
   {
     private readonly TravelContext _db;
+    private readonly IUriService uriService;
 
-    public ReviewsController(TravelContext db)
+    public ReviewsController(TravelContext db, IUriService uriService)
     {
+      this.uriService = uriService;
       _db = db;
     }
 
@@ -41,13 +43,15 @@ namespace Travel.Controllers
     [HttpGet]
     public async Task<IActionResult> GetAll([FromQuery] PaginationFilter filter)
     {
+      var route = Request.Path.Value;
       var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
       var pagedData = await _db.Reviews
         .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
         .Take(validFilter.PageSize)
         .ToListAsync();
       var totalRecords = await _db.Reviews.CountAsync();
-      return Ok(new PagedResponse<List<Review>>(pagedData, validFilter.PageNumber, validFilter.PageSize));
+      var pagedResponse = PaginationHelper.CreatePagedResponse<Review>(pagedData, validFilter, totalRecords, uriService, route);
+      return Ok(pagedResponse);
     }
 
      //GET: api/Reviews/Popular
