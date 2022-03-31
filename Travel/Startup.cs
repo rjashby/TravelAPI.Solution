@@ -15,9 +15,12 @@ using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Travel.Models;
 using Travel.Services;
+using System.Reflection;
+using System.IO;
 
 namespace Travel
 {
+  #pragma warning disable CS1591
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -53,6 +56,23 @@ namespace Travel
               return new UriService(uri);
             });
             // Finish Pagination
+
+            // Add Swagger
+            services.AddSwaggerGen(c =>
+            {
+              c.SwaggerDoc("v1", new OpenApiInfo
+              {
+                Title = "Travel",
+                Version = "v1",
+                Description = "A simple example ASP.NET Core Web API",
+                Contact = new OpenApiContact
+                {
+                  Name = "Bill Braski",
+                  Email = "BillBill@gmail.com"
+                }
+              });
+            });
+            // End Swagger
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,6 +81,10 @@ namespace Travel
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                // Swagger
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Travel v1"));
+                // Swagger
             }
 
             // app.UseHttpsRedirection();
@@ -75,4 +99,5 @@ namespace Travel
             });
         }
     }
+  #pragma warning restore CS1591
 }
