@@ -11,7 +11,7 @@ namespace Travel.Models
     public UrlQuery()
     {
       this.PageNumber = 1;
-      this.PageSize = 10;
+      this.PageSize = 5;
     }
 
     public UrlQuery(int pageNumber, int pageSize)

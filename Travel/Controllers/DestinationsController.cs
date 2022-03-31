@@ -37,7 +37,7 @@ namespace Travel.Controllers
      //GET: api/Destinations/Country?country=
     [HttpGet]
     [Route("Country")]
-    public async Task<ActionResult<IEnumerable<Review>>> Country(string country)
+    public async Task<ActionResult<IEnumerable<Review>>> Country([FromQuery] UrlQuery urlQuery, string country)
     {
       var query = _db.Reviews.AsQueryable();
 
@@ -57,7 +57,7 @@ namespace Travel.Controllers
      //GET: api/Destinations/City
     [HttpGet]
     [Route("City")]
-    public async Task<ActionResult<IEnumerable<Review>>> City(string city)
+    public async Task<ActionResult<IEnumerable<Review>>> City([FromQuery] UrlQuery urlQuery, string city)
     {
       var query = _db.Reviews.AsQueryable();
 
