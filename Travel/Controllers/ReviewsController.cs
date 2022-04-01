@@ -14,7 +14,6 @@ using Travel.Services;
 
 namespace Travel.Controllers
 {
-  #pragma warning disable CS1591
   [Route("api/[controller]")]
   [ApiController]
   public class ReviewsController : ControllerBase
@@ -163,5 +162,4 @@ namespace Travel.Controllers
       return _db.Reviews.Any(e => e.ReviewId == id);
     }
   }
-  #pragma warning restore CS1591
 }

@@ -20,7 +20,6 @@ using System.IO;
 
 namespace Travel
 {
-  #pragma warning disable CS1591
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -33,13 +32,13 @@ namespace Travel
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            ///versioning test
+            ///Versioning
             services.AddApiVersioning(o => {
                 o.ReportApiVersions = true;
                 o.AssumeDefaultVersionWhenUnspecified = true;
                 o.DefaultApiVersion = new ApiVersion(1, 0);
             });
-            ////end of versioning test
+            ////end of Versioning
             
             services.AddDbContext<TravelContext>(opt =>
                 opt.UseMySql(Configuration["ConnectionStrings:DefaultConnection"], ServerVersion.AutoDetect(Configuration["ConnectionStrings:DefaultConnection"])));
@@ -99,5 +98,4 @@ namespace Travel
             });
         }
     }
-  #pragma warning restore CS1591
 }
